@@ -2,6 +2,7 @@ from django.test import TestCase
 
 from .models import Board
 
+
 class BoardTestCase(TestCase):
 
     def setUp(self):
@@ -10,4 +11,3 @@ class BoardTestCase(TestCase):
             description="this is a to do list",
             owner=1
         )
-        

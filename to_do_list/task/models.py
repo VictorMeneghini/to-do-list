@@ -1,7 +1,7 @@
 from django.db import models
 from to_do_list.status.models import Status
 
-class Board(models.Model):
+class Task(models.Model):
 
     name = models.CharField(
         max_length=50,

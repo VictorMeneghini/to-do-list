@@ -1,7 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Board(models.Model):
+
+    class Meta:
+        verbose_name = ("Board")
+        verbose_name_plural = ("Boards")
 
     name = models.CharField(
         max_length=50,

@@ -1,0 +1,88 @@
+<h1>HI, see all your boards</h1>
+<style> 
+#draggable {
+  background: #e0ffee;
+  border: 1px solid #57a57a;
+  width: 200px;
+  padding: 5px;
+}
+.dropzone {
+  width: 300px;
+  padding: 10px;
+  margin: 10px;
+  background: #eee;
+  border: 2px solid #000;
+}
+
+.active {
+  background: #fffad6;
+  border: 2px solid #aaa479;
+}
+.over {
+  background: #ffc6c6;
+  border: 2px solid #931414;
+}
+
+#draggable, .dropzone {
+  transition: all 0.7s;
+}
+
+
+
+</style>
+<div class="dropzone">
+    <div id="draggable" draggable="true">
+      Task1
+    </div>
+  </div>
+  <div class="dropzone"></div>
+  <div class="dropzone"></div>
+  <div class="dropzone"></div>
+  <div class="dropzone"></div>
+
+</div>
+
+<script>
+window.onload = function () {
+  var draggable = document.getElementById("draggable"),
+      dropzones = document.getElementsByClassName("dropzone");
+
+  draggable.addEventListener("dragstart", function () {
+    for (let i = 0; i < dropzones.length; i++) {
+      dropzones[i].classList.add("active");
+    }
+  });
+
+  draggable.addEventListener("dragend", function () {
+    for (let i = 0; i < dropzones.length; i++) {
+      dropzones[i].classList.remove("active");
+      dropzones[i].classList.remove("over");
+    }
+  });
+
+  draggable.addEventListener("drag", function () {
+  });
+
+  for (let i = 0; i < dropzones.length; i++) {
+    dropzones[i].addEventListener("dragenter", function () {
+      dropzones[i].classList.add("over");
+    });
+
+    dropzones[i].addEventListener("dragleave", function () {
+      dropzones[i].classList.remove("over");
+    });
+
+    dropzones[i].addEventListener("dragover", function (evt) {
+      evt.preventDefault();
+    });
+
+    dropzones[i].addEventListener("drop", function (evt) {
+      evt.preventDefault();
+      if (evt.target != draggable.parentNode && evt.target != draggable) {
+        draggable.parentNode.removeChild(draggable);
+        evt.target.appendChild(draggable);
+      }
+    });
+  }
+};
+</script>

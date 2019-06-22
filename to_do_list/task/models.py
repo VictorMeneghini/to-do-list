@@ -1,7 +1,12 @@
 from django.db import models
 from to_do_list.status.models import Status
 
+
 class Task(models.Model):
+
+    class Meta:
+        verbose_name = ("Task")
+        verbose_name_plural = ("Tasks")
 
     name = models.CharField(
         max_length=50,

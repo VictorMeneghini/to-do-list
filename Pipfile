@@ -10,6 +10,7 @@ flake8 = "*"
 django = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.7"

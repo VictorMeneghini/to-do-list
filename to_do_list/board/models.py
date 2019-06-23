@@ -18,7 +18,7 @@ class Board(models.Model):
         blank=False
     )
 
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ManyToManyField(User)
 
     def __str__(self):
         return self.name

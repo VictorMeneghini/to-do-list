@@ -70,3 +70,11 @@ class BoardUpdate(UpdateView):
 class BoardDelete(DeleteView):
     model = Board
     success_url = reverse_lazy('board:index')
+
+
+def board_home(request, *args, **kwargs):
+    context = {}
+    current_board = get_object_or_404(Board, pk=kwargs['pk'])
+    context['current_board'] = current_board
+    context['columns'] = current_board.status.all()
+    return render(request, 'board/board.html', context)

@@ -1,0 +1,20 @@
+<h1>hi i'm a bord</h1>
+
+<a href="{% url 'status:status_create' current_board.pk %}">Create new column</a>
+
+{% for column in columns%}
+  <p>{{column.name}}</p>
+  <a href="{% url 'status:status_update' column.pk %}">Update</a>
+  <form action="{% url 'status:status_delete' column.pk %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" value="{{current_board.pk}}" name="board_id">
+      <button class="button-no-bg" type="submit">
+        delete
+      </button>
+    </form>
+  {% for task in column.tasks.all %}
+    <p>{{task.name}}</p>
+  {% endfor %}
+  <hr>
+{% endfor %}
+

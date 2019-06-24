@@ -3,12 +3,12 @@
 <a href="{% url 'board:board_create' %}">Create new board</a>
 
 {% for board in all_boards %}
-  <h3>{{ board }}</h3>
+  <a href="{% url 'board:board_home' board.pk %}"> {{board.name}}</a>
   <p>{{board.description}}</p>
 
   <a href="{% url 'board:board_update' board.pk %}">Update</a>
   
-  <form action="{% url 'board:board_delete' board.pk %}" method="POST">
+  <form action="{% url 'board:board_delete' board.pk %}" method="post">
       {% csrf_token %}
       <button class="button-no-bg" type="submit">
         delete

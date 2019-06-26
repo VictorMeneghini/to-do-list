@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class BoardConfig(AppConfig):
+class StatusConfig(AppConfig):
     name = 'status'

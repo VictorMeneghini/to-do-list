@@ -1,6 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
 <h1>HI, see all your boards</h1>
 
 <a href="{% url 'board:board_create' %}">Create new board</a>
+<a href="accounts/logout/">Log out</a>
 
 {% for board in all_boards %}
   <a href="{% url 'board:board_home' board.pk %}"> {{board.name}}</a>
@@ -16,3 +20,5 @@
     </form>
     <hr>
 {% endfor %}
+
+{% endblock %}

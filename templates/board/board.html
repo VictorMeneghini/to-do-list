@@ -7,13 +7,20 @@
   <a href="{% url 'status:status_update' column.pk %}">Update</a>
   <form action="{% url 'status:status_delete' column.pk %}" method="post">
       {% csrf_token %}
-      <input type="hidden" value="{{current_board.pk}}" name="board_id">
       <button class="button-no-bg" type="submit">
         delete
       </button>
     </form>
   {% for task in column.tasks.all %}
     <p>{{task.name}}</p>
+    <a href="{% url 'task:task_create' column.pk %}">Create task</a>
+    <a href="{% url 'task:task_update' task.pk %}">Update task</a>
+    <form action="{% url 'task:task_delete' task.pk %}" method="post">
+      {% csrf_token %}
+      <button class="button-no-bg" type="submit">
+        delete
+      </button>
+    </form>
   {% endfor %}
   <hr>
 {% endfor %}

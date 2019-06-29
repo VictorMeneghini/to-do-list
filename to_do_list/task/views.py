@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 
+from to_do_list.status.models import Status
 from .models import Task
 from .forms import TaskForm
 
@@ -20,8 +21,10 @@ class CreateTask(CreateView):
         form = TaskForm(request.POST)
         if form.is_valid():
             status_id = kwargs['pk']
+            status = get_object_or_404(Status, pk=status_id)
             form.save(status_id)
-            return redirect(reverse("board:index"))
+            return redirect(reverse("board:board_home", args=(status.board_id,)))
+
         else:
             context = self.get_context_data()
             context["form"] = form
@@ -49,8 +52,9 @@ class UpdateTask(UpdateView):
         form = TaskForm(request.POST, request.FILES, instance=task)
 
         if form.is_valid():
+            status = get_object_or_404(Status, pk=task.status_id)
             form.save(task.status_id)
-            return redirect(reverse("board:index"))
+            return redirect(reverse("board:board_home", args=(status.board_id,)))
         else:
             context = self.get_context_data()
             context["form"] = form

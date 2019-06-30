@@ -10,6 +10,8 @@ This project is built in django with:
 
 The purpose of this project is to serve as a solid foundation of study in the django framework, django rest framework, jwt among other technologies, so the project has not yet been completed..
 
+and probably some things will not behave as expected
+
 ### Installation
 
 ```sh

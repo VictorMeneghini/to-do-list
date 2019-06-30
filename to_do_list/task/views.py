@@ -1,5 +1,5 @@
-from django.shortcuts import redirect, render, get_object_or_404
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 
 from to_do_list.status.models import Status
@@ -10,58 +10,33 @@ from .forms import TaskForm
 class CreateTask(CreateView):
     template_name = 'task/form.html'
     model = Task
-    fields = ['name', 'description']
+    form_class = TaskForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["form"] = TaskForm()
-        return context
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['status'] = get_object_or_404(Status, pk=self.kwargs.get('pk'))
+        return kwargs
 
-    def post(self, request, *args, **kwargs):
-        form = TaskForm(request.POST)
-        if form.is_valid():
-            status_id = kwargs['pk']
-            status = get_object_or_404(Status, pk=status_id)
-            form.save(status_id)
-            return redirect(reverse("board:board_home", args=(status.board_id,)))
-
-        else:
-            context = self.get_context_data()
-            context["form"] = form
-            return render(request, self.template_name, context)
+    def get_success_url(self, **kwargs):
+        board_pk = self.object.status.board.pk
+        return reverse_lazy('board:board_home', args=(board_pk,))
 
 
 class UpdateTask(UpdateView):
+    template_name = 'task/form.html'
     model = Task
-    fields = ['name', 'description']
-    template_name = 'status/form.html'
+    form_class = TaskForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        task = get_object_or_404(Task, pk=self.kwargs["pk"])
-        data = {
-            "name": task.name,
-            "description": task.description,
-        }
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['status'] = get_object_or_404(Status, pk=self.kwargs.get('pk'))
+        return kwargs
 
-        context["form"] = TaskForm(data=data)
-        return context
-
-    def post(self, request, *args, **kwargs):
-        task = get_object_or_404(Task, pk=self.kwargs["pk"])
-        form = TaskForm(request.POST, request.FILES, instance=task)
-
-        if form.is_valid():
-            status = get_object_or_404(Status, pk=task.status_id)
-            form.save(task.status_id)
-            return redirect(reverse("board:board_home", args=(status.board_id,)))
-        else:
-            context = self.get_context_data()
-            context["form"] = form
-            return render(request, self.template_name, context)
+    def get_success_url(self, **kwargs):
+        board_pk = self.object.status.board.pk
+        return reverse_lazy('board:board_home', args=(board_pk,))
 
 
 class TaskDelete(DeleteView):
     model = Task
     success_url = reverse_lazy('board:index')
-

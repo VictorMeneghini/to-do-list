@@ -5,26 +5,25 @@ from .models import Task
 
 class TaskForm(forms.ModelForm):
     name = forms.CharField(
-        label="Task Name",
+        label='Task Name',
         required=True,
         max_length=255,
     )
 
     description = forms.CharField(
-        label="Task Description",
+        label='Task Description',
         required=True,
         max_length=255,
     )
 
-    def save(self, status_id):
-        instance = super().save(commit=False)
-        instance.status_id = status_id
-        instance.save()
-        return instance
+    def __init__(self, status=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if status:
+            self.instance.status = status
 
     class Meta:
         fields = [
-            "name",
-            "description"
+            'name',
+            'description'
         ]
         model = Task

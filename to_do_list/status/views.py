@@ -1,7 +1,8 @@
-from django.shortcuts import redirect, render, get_object_or_404
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 
+from to_do_list.board.models import Board
 from .models import Status
 from .forms import StatusForm
 
@@ -9,53 +10,31 @@ from .forms import StatusForm
 class CreateStatus(CreateView):
     template_name = 'status/form.html'
     model = Status
-    fields = ['name', 'order']
+    form_class = StatusForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["form"] = StatusForm()
-        return context
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['board'] = get_object_or_404(Board, pk=self.kwargs.get('pk'))
+        return kwargs
 
-    def post(self, request, *args, **kwargs):
-        form = StatusForm(request.POST)
-
-        if form.is_valid():
-            board_id = kwargs['pk']
-            form.save(board_id)
-            return redirect(reverse("board:board_home", args=(kwargs['pk'],)))
-        else:
-            context = self.get_context_data()
-            context["form"] = form
-            return render(request, self.template_name, context)
+    def get_success_url(self, **kwargs):
+        board_pk = self.object.board.pk
+        return reverse_lazy('board:board_home', args=(board_pk,))
 
 
 class UpdateStatus(UpdateView):
     model = Status
-    fields = ['name', 'order']
     template_name = 'status/form.html'
+    form_class = StatusForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        status = get_object_or_404(Status, pk=self.kwargs["pk"])
-        data = {
-            "name": status.name,
-            "order": status.order,
-        }
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['board'] = get_object_or_404(Board, pk=self.kwargs.get('pk'))
+        return kwargs
 
-        context["form"] = StatusForm(data=data)
-        return context
-
-    def post(self, request, *args, **kwargs):
-        status = get_object_or_404(Status, pk=self.kwargs["pk"])
-        form = StatusForm(request.POST, request.FILES, instance=status)
-
-        if form.is_valid():
-            form.save(status.board_id)
-            return redirect(reverse("board:board_home", args=(status.board_id,)))
-        else:
-            context = self.get_context_data()
-            context["form"] = form
-            return render(request, self.template_name, context)
+    def get_success_url(self, **kwargs):
+        board_pk = self.object.board.pk
+        return reverse_lazy('board:board_home', args=(board_pk,))
 
 
 class StatusDelete(DeleteView):

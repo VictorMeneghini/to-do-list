@@ -9,7 +9,7 @@ class Status(models.Model):
         verbose_name_plural = ("Status")
 
     name = models.CharField(
-        max_length=50,
+        max_length=20,
         blank=False
     )
 

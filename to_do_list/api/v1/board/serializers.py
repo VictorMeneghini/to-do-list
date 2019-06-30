@@ -14,3 +14,9 @@ class BoardSerializer(serializers.ModelSerializer):
             'status',
             'description'
         ]
+
+    def create(self, validate_data):
+        instance = super().create(validate_data)
+        instance.owner.add(self.context.get('request').user)
+        instance.save()
+        return instance

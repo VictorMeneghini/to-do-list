@@ -1,4 +1,10 @@
-<h1>hi i'm a bord</h1>
+{% extends "base.html" %}
+{% load sass_tags static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% sass_src 'css/board/index.scss' %}" />
+
+<!-- <h1>hi i'm a bord</h1>
 
 <a href="{% url 'status:status_create' current_board.pk %}">Create new column</a>
 
@@ -23,5 +29,111 @@
     </form>
   {% endfor %}
   <hr>
-{% endfor %}
+{% endfor %} -->
+<div class="ui">
+    <div class="lists">
+      {% for column in columns%}
+      <div class="list dropzone" id="{{column.id}}">
+        <header>
+          <a href="{% url 'status:status_update' column.pk %}">{{column.name}}</a>
+          <form action="{% url 'status:status_delete' column.pk %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </header>
+        <ul>
+          {% for task in column.tasks.all %}
+          <div 
+            class="card"
+            draggable="true"
+            id="draggable-{{task.id}}"
+            ondragstart="startDrag({{task.id}})"
+            >
+              <div class="card-body">
+                <h5 class="card-title">{{task.name}}</h5>
+                <p class="card-text">{{task.description}}</p>
+                <p class="card-text"><small class="text-muted">{{task.created_at}}</small></p>
+                <a href="{% url 'task:task_update' task.pk %}">Update task</a>
+              </div>
+            </div>
+          {% endfor %}
+        </ul>
+        <footer><a href="{% url 'task:task_create' column.pk %}">Add task</a></footer>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
 
+  <script>
+    startDrag = (id) => {
+      var draggableElement = document.getElementById(`draggable-${id}`)
+      let dropzones = document.getElementsByClassName("dropzone");
+      
+      for (let i = 0; i < dropzones.length; i++) {
+        dropzones[i].addEventListener("dragenter", () => {
+          console.log(dropzones[i]);
+          dropzones[i].classList.add("over");
+        });
+
+        dropzones[i].addEventListener("drop", (evt) => {
+          evt.preventDefault();
+          console.log('caiu');
+          
+          if (evt.target != draggable.parentNode && evt.target != draggable) {
+            draggable.parentNode.removeChild(draggable);
+            evt.target.appendChild(draggable);
+          }
+        });
+      }
+    }
+
+      // window.onload = function () {
+      //   var draggable = document.getElementById("draggable"),
+      //       dropzones = document.getElementsByClassName("dropzone");  
+
+      //   console.log(draggable);
+          
+      
+      //   draggable.addEventListener("dragstart", function () {
+      //     for (let i = 0; i < dropzones.length; i++) {
+      //       console.log('start drag');
+            
+      //       dropzones[i].classList.add("active");
+      //     }
+      //   });
+      
+      //   draggable.addEventListener("dragend", function () {
+      //     for (let i = 0; i < dropzones.length; i++) {
+      //       dropzones[i].classList.remove("active");
+      //       dropzones[i].classList.remove("over");
+      //     }
+      //   });
+      
+      //   draggable.addEventListener("drag", function () {
+      //   });
+      
+      //   for (let i = 0; i < dropzones.length; i++) {
+      //     dropzones[i].addEventListener("dragenter", function () {
+      //       dropzones[i].classList.add("over");
+      //     });
+      
+      //     dropzones[i].addEventListener("dragleave", function () {
+      //       dropzones[i].classList.remove("over");
+      //     });
+      
+      //     dropzones[i].addEventListener("dragover", function (evt) {
+      //       evt.preventDefault();
+      //     });
+      
+      //     dropzones[i].addEventListener("drop", function (evt) {
+      //       evt.preventDefault();
+      //       if (evt.target != draggable.parentNode && evt.target != draggable) {
+      //         draggable.parentNode.removeChild(draggable);
+      //         evt.target.appendChild(draggable);
+      //       }
+      //     });
+      //   }
+      // };
+      // </script>
+
+  {% endblock %}

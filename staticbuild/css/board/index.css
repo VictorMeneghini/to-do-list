@@ -1,0 +1,57 @@
+/* Some Sass variables */
+.lists {
+  display: flex;
+  overflow-x: auto; }
+  .lists > * {
+    flex: 0 0 auto;
+    margin-left: 10px;
+    margin-top: 10px; }
+  .lists::after {
+    content: '';
+    flex: 0 0 10px; }
+
+.list {
+  width: 300px;
+  height: calc(100% - 10px - 17px); }
+  .list > * {
+    background-color: #e2e4e6;
+    color: #333;
+    padding: 0 10px; }
+  .list header {
+    line-height: 36px;
+    font-size: 16px;
+    font-weight: bold;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    display: flex;
+    justify-content: space-between; }
+    .list header a {
+      text-decoration: none; }
+  .list footer {
+    line-height: 36px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: #888; }
+  .list ul {
+    list-style: none;
+    margin: 0;
+    max-height: calc(100% - 36px - 36px);
+    overflow-y: auto; }
+    .list ul div {
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 3px; }
+      .list ul div:not(:last-child) {
+        margin-bottom: 10px; }
+
+.active {
+  width: 320px; }
+
+.over {
+  background: #ffc6c6;
+  border: 2px solid #931414; }
+
+#draggable, .dropzone {
+  transition: all 0.7s; }
+
+/*# sourceMappingURL=index.css.map */

@@ -9,16 +9,19 @@ class Board(models.Model):
         verbose_name_plural = ("Boards")
 
     name = models.CharField(
-        max_length=50,
-        blank=False
+        max_length=20,
+        blank=False,
     )
 
     description = models.TextField(
         null=False,
+        max_length=255,
         blank=False
     )
 
-    owner = models.ManyToManyField(User)
+    owner = models.ManyToManyField(
+        User,
+        related_name='boards')
 
     def __str__(self):
         return self.name

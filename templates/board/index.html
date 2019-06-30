@@ -1,24 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>HI, see all your boards</h1>
+<h1>Your boards</h1>
 
-<a href="{% url 'board:board_create' %}">Create new board</a>
+<a href="{% url 'board:board_create' %}" class="btn btn-primary">Create new board</a>
 <a href="accounts/logout/">Log out</a>
 
-{% for board in all_boards %}
-  <a href="{% url 'board:board_home' board.pk %}"> {{board.name}}</a>
-  <p>{{board.description}}</p>
-
-  <a href="{% url 'board:board_update' board.pk %}">Update</a>
-  
-  <form action="{% url 'board:board_delete' board.pk %}" method="post">
-      {% csrf_token %}
-      <button class="button-no-bg" type="submit">
-        delete
-      </button>
-    </form>
-    <hr>
-{% endfor %}
+<div class="row">
+    {% for board in all_boards %}
+    <div class="col-sm-4">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">{{board.name}}</h3>
+            <p class="card-text"> {{board.description}}</p>
+            <a href="{% url 'board:board_home' board.pk %}" class="btn btn-primary"> {{board.name}}</a>
+          </div>
+        </div>
+      </div>
+    <!-- <a href="{% url 'board:board_update' board.pk %}">Update</a>
+    
+    <form action="{% url 'board:board_delete' board.pk %}" method="post">
+        {% csrf_token %}
+        <button class="button-no-bg" type="submit">
+          delete
+        </button>
+      </form>
+      <hr> -->
+  {% endfor %}
+</div>
 
 {% endblock %}

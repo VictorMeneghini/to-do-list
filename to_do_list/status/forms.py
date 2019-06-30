@@ -12,11 +12,10 @@ class StatusForm(forms.ModelForm):
 
     order = forms.IntegerField()
 
-    def save(self, board_id):
-        instance = super().save(commit=False)
-        instance.board_id = board_id
-        instance.save()
-        return instance
+    def __init__(self, board=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if board:
+            self.instance.board = board
 
     class Meta:
         fields = [

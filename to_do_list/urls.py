@@ -10,5 +10,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('api/v1/', include('to_do_list.api.v1.urls')),
-    path('docs/', include_docs_urls(title='My API title'))
+    path('docs/', include_docs_urls(title='To do List'))
 ]

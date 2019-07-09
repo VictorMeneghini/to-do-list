@@ -29,7 +29,11 @@ class CreateBoard(CreateView):
         form = BoardForm(request.POST)
 
         if form.is_valid():
-            form.save(self.request)
+            board = form.save(self.request)
+            print(board)
+            board.owner.add(self.request.user)
+            board.save()
+            print(board.owner)
             return redirect(reverse("board:index"))
         else:
             context = self.get_context_data()

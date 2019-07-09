@@ -16,14 +16,10 @@ class BoardForm(forms.ModelForm):
         max_length=255,
     )
 
-    def __init__(self, user, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if user:
-            self.instance.user = user
-
     class Meta:
         fields = [
             "name",
             "description"
         ]
         model = Board
+

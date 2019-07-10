@@ -31,6 +31,7 @@
   <hr>
 {% endfor %} -->
 <div class="ui">
+    <a href="{% url 'status:status_create' current_board.pk %}">Create new column</a>
     <div class="lists">
       {% for column in columns%}
       <div class="list dropzone" id="{{column.id}}">

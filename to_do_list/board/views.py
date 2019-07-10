@@ -11,7 +11,8 @@ class Index(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['all_boards'] = Board.objects.all()
+        print(self.request.user.id)
+        context['all_boards'] = Board.objects.filter(owner=self.request.user)
         return context
 
 

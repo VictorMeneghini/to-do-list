@@ -20,27 +20,17 @@ class CreateBoard(CreateView):
     template_name = 'board/form.html'
     model = Board
     fields = ['name', 'description']
+    success_url = reverse_lazy("board:index")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = BoardForm()
         return context
 
-    def post(self, request, *args, **kwargs):
-        form = BoardForm(request.POST)
-
-        if form.is_valid():
-            board = form.save(self.request)
-            print(board)
-            board.owner.add(self.request.user)
-            board.save()
-            print(board.owner)
-            return redirect(reverse("board:index"))
-        else:
-            context = self.get_context_data()
-            context["form"] = form
-            return render(request, self.template_name, context)
-
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        form.instance.owner.add(self.request.user)
+        return result
 
 class BoardUpdate(UpdateView):
     model = Board

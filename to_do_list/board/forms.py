@@ -21,5 +21,5 @@ class BoardForm(forms.ModelForm):
             "name",
             "description"
         ]
-        model = Board
 
+        model = Board
